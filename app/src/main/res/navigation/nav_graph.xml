@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_students_list">
+
+
+    <fragment
+        android:id="@+id/fragment_students_list"
+        android:name="com.example.studentsapp.ui.StudentsListFragment"
+        android:label="Students List"
+        tools:layout="@layout/fragment_students_list" >
+        <action
+            android:id="@+id/action_fragment_students_list_to_fragment_add_new_student"
+            app:destination="@id/fragment_add_new_student" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_add_new_student"
+        android:name="com.example.studentsapp.ui.AddNewStudentFragment"
+        android:label="New Student"
+        tools:layout="@layout/fragment_add_new_student" >
+        <action
+            android:id="@+id/action_fragment_add_new_student_to_fragment_students_list"
+            app:destination="@id/fragment_students_list"
+            app:popUpTo="@id/fragment_students_list" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_student_details"
+        android:name="com.example.studentsapp.StudentDetailsFragment"
+        android:label="fragment_student_details"
+        tools:layout="@layout/fragment_student_details" >
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_fragment_students_list"
+            app:destination="@id/fragment_students_list" />
+        <argument
+            android:name="student_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_studentDetailsFragment_to_editStudentDetails"
+            app:destination="@id/fragment_edit_student_details" />
+    </fragment>
+    <action android:id="@+id/action_global_studentDetailsFragment" app:destination="@id/fragment_student_details" />
+    <fragment
+        android:id="@+id/fragment_edit_student_details"
+        android:name="com.example.studentsapp.EditStudentDetailsFragment"
+        android:label="fragment_edit_student_details"
+        tools:layout="@layout/fragment_edit_student_details" >
+        <argument
+            android:name="student_ID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragment_edit_student_details_to_fragment_students_list"
+            app:destination="@id/fragment_students_list"
+            app:popUpTo="@id/fragment_students_list" />
+    </fragment>
+</navigation>
