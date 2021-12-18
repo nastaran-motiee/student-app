@@ -47,11 +47,12 @@
         android:label="fragment_edit_student_details"
         tools:layout="@layout/fragment_edit_student_details" >
         <argument
-            android:name="student_ID"
+            android:name="student_id"
             app:argType="string" />
         <action
             android:id="@+id/action_fragment_edit_student_details_to_fragment_students_list"
             app:destination="@id/fragment_students_list"
             app:popUpTo="@id/fragment_students_list" />
+
     </fragment>
 </navigation>

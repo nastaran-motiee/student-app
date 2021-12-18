@@ -19,12 +19,15 @@ public interface StudentDao {
     void insertAll(Student... students);
 
     @Delete
-    void delete(Student student);
+    void deleteStudent(Student student);
 
     @Query("SELECT * FROM Student WHERE id =:id ")
     Student getStudentById(String id);
 
     @Update(entity = Student.class)
     void updateStudent(Student student);
+
+    @Query("UPDATE Student SET id =:updated_id WHERE id =:current_id")
+    void updateId(String current_id, String updated_id);
 
 }

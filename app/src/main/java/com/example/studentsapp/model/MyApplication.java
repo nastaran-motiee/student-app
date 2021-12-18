@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MyApplication extends Application {
-    public static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    public static ExecutorService executorService = Executors.newFixedThreadPool(2);
     private static Context appContext;
     public static Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     @Override
@@ -22,5 +22,5 @@ public class MyApplication extends Application {
 
     public static Context getContext(){
         return appContext;
-    };
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.studentsapp.model.Model;
 import com.example.studentsapp.model.Student;
@@ -38,6 +39,7 @@ public class EditStudentDetailsFragment extends Fragment {
     MissingIdAlertDialog missingIdAlertDialog;
     Button deleteButton;
     Student student;
+    ProgressBar progressBar;
 
 
     public EditStudentDetailsFragment() {
@@ -62,13 +64,15 @@ public class EditStudentDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_student_details, container, false);
 
-        studentId= EditStudentDetailsFragmentArgs.fromBundle(getArguments()).getStudentID();
+        studentId= EditStudentDetailsFragmentArgs.fromBundle(getArguments()).getStudentId();
         Log.d("Tag1",studentId);
         name = ((EditText) view.findViewById(R.id.edit_name_et));
         id = ((EditText) view.findViewById(R.id.edit_id_et));
         phone = ((EditText) view.findViewById(R.id.edit_phone_et));
         address = ((EditText) view.findViewById(R.id.edit_address_et));
         checkBox = ((CheckBox) view.findViewById(R.id.edit_student_cb));
+        progressBar = view.findViewById(R.id.edit_student_details_progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
 
         Model.instance.getStudentById(studentId, (student)->{
             this.student = student;
@@ -77,6 +81,7 @@ public class EditStudentDetailsFragment extends Fragment {
             id.setText(student.id);
             name.setText(student.name);
             address.setText(student.address);
+            progressBar.setVisibility(View.GONE);
 
         });
 
@@ -100,14 +105,14 @@ public class EditStudentDetailsFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Log.d("Tag2",""+Model.instance.getStById(studentId).name);
+
+                Log.d("Tag2",""+studentId);
                 String st_name= ((EditText)view.findViewById(R.id.edit_name_et)).getText().toString();
                 String st_id = ((EditText)view.findViewById(R.id.edit_id_et)).getText().toString();
                 String st_phone = ((EditText)view.findViewById(R.id.edit_phone_et)).getText().toString();
                 String st_address = ((EditText)view.findViewById(R.id.edit_address_et)).getText().toString();
                 boolean st_cb = ((CheckBox)view.findViewById(R.id.edit_student_cb)).isChecked();
-                Model.instance.updateStudent(new Student(st_name,st_id,st_phone,st_address,st_cb));
-
+                Log.d("Tag2",""+st_id);
 
 
 
@@ -120,15 +125,22 @@ public class EditStudentDetailsFragment extends Fragment {
                     return;
                 }
 
-                Navigation.findNavController(view).popBackStack(R.id.fragment_students_list,false);
+
+                Model.instance.updateId(studentId,st_id,()->{
+                    Model.instance.updateStudent(new Student(st_name,st_id,st_phone,st_address,st_cb));
+                    Navigation.findNavController(view).popBackStack(R.id.fragment_students_list,false);
+                });
+
+
             }
         });
+
 
         deleteButton = view.findViewById(R.id.edit_student_delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.remove(student);
+                Model.instance.deleteStudent(student);
                 Navigation.findNavController(view).popBackStack(R.id.fragment_students_list,false);
             }
         });

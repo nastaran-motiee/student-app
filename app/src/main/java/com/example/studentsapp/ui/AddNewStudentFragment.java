@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.studentsapp.R;
 import com.example.studentsapp.model.Model;
@@ -35,6 +36,7 @@ public class AddNewStudentFragment extends Fragment {
     String phone;
     String address;
     boolean cb;
+    ProgressBar progressBar;
 
     MissigNameAlertDialog missigNameAlertDialog;
     MissingIdAlertDialog missingIdAlertDialog;
@@ -76,9 +78,14 @@ public class AddNewStudentFragment extends Fragment {
         saveButton = view.findViewById(R.id.add_student_save_button);
         missigNameAlertDialog = new MissigNameAlertDialog();
         missingIdAlertDialog = new MissingIdAlertDialog();
+        progressBar = view.findViewById(R.id.add_new_student_progress_bar);
+        progressBar.setVisibility(View.GONE);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                saveButton.setEnabled(false);
+                cancelButton.setEnabled(false);
                 name= ((EditText)view.findViewById(R.id.edit_name_et)).getText().toString();
                 id = ((EditText)view.findViewById(R.id.edit_id_et)).getText().toString();
                 phone = ((EditText)view.findViewById(R.id.edit_phone_et)).getText().toString();
@@ -96,8 +103,10 @@ public class AddNewStudentFragment extends Fragment {
                     return;
                 }
 
-                Model.instance.addNewStudent(new Student(name,id,phone,address,cb,selectImage));
-                Navigation.findNavController(view).popBackStack(R.id.fragment_students_list,false);
+                Model.instance.addNewStudent(new Student(name,id,phone,address,cb,selectImage),()->{
+                   Navigation.findNavController(view).popBackStack(R.id.fragment_students_list,false);
+
+                });
             }
         });
 

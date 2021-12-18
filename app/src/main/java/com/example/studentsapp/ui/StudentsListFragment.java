@@ -74,13 +74,14 @@ public class StudentsListFragment extends Fragment {
         //----------------------------------
         setHasOptionsMenu(true);
 
-        progressBar.setVisibility(view.VISIBLE);
-
+        progressBar = view.findViewById(R.id.students_list_fragment_progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
         Model.instance.getStudentList(new Model.getStudentListListener() {
             @Override
             public void onComplete(List<Student> d) {
                 data = d;
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -91,7 +92,7 @@ public class StudentsListFragment extends Fragment {
             @Override
             public void onItemClick(int position,View v) {
                 Student st = data.get(position);
-                NavDirections action = StudentsListFragmentDirections.actionGlobalStudentDetailsFragment(st.getId());
+                NavDirections action =StudentsListFragmentDirections.actionGlobalStudentDetailsFragment(st.getId());
                 Navigation.findNavController(view).navigate(action);
                 Log.d("TAG", "row was clicked " + data.get(position).id);
             }
@@ -134,8 +135,8 @@ public class StudentsListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();
-                    data.get(pos).cb = cb.isChecked();
-
+                    Student student = Model.instance.getStById(idTv.getText().toString());
+                    Model.instance.updateStudent(new Student(student.name,student.id,student.phone,student.address,cb.isChecked()));
 
                 }
             });
